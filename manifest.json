@@ -1,0 +1,95 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/vDevPreview/MicrosoftTeams.schema.json",
+  "id": "e1b2c3d4-5678-9abc-def0-123456789abc",
+  "version": "1.0.0",
+  "manifestVersion": "devPreview",
+  "name": {
+    "short": "RemoveSelf",
+    "full": "Remove Self from Recipients"
+  },
+  "description": {
+    "short": "Rimuove automaticamente i tuoi indirizzi email dai destinatari prima dell'invio",
+    "full": "Add-in per Outlook che rimuove automaticamente gli indirizzi email del mittente (d.cucciniello@sanitea.com, daniele@aldero.com) dai campi A/CC/CCN quando ci sono altri destinatari. Evita di inviarti email quando rispondi a tutti."
+  },
+  "developer": {
+    "name": "Sanitea Srl",
+    "websiteUrl": "https://www.sanitea.com",
+    "privacyUrl": "https://www.sanitea.com/privacy",
+    "termsOfUseUrl": "https://www.sanitea.com/terms"
+  },
+  "icons": {
+    "outline": "assets/icon-outline.png",
+    "color": "assets/icon-color.png"
+  },
+  "accentColor": "#1E3A5F",
+  "authorization": {
+    "permissions": {
+      "resourceSpecific": [
+        {
+          "name": "Mailbox.ReadWrite.User",
+          "type": "Delegated"
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "requirements": {
+        "scopes": ["mail"],
+        "capabilities": [
+          {
+            "name": "Mailbox",
+            "minVersion": "1.12"
+          }
+        ]
+      },
+      "runtimes": [
+        {
+          "requirements": {
+            "capabilities": [
+              {
+                "name": "Mailbox",
+                "minVersion": "1.12"
+              }
+            ]
+          },
+          "id": "autorun_runtime",
+          "type": "general",
+          "code": {
+            "page": "https://dnqc.github.io/outlook-addin-remove-self/src/launchevent.html",
+            "script": "https://dnqc.github.io/outlook-addin-remove-self/src/launchevent.js"
+          },
+          "lifetime": "short",
+          "actions": [
+            {
+              "id": "onMessageSendHandler",
+              "type": "executeFunction",
+              "displayName": "Remove Self from Recipients"
+            }
+          ]
+        }
+      ],
+      "autoRunEvents": [
+        {
+          "requirements": {
+            "capabilities": [
+              {
+                "name": "Mailbox",
+                "minVersion": "1.12"
+              }
+            ]
+          },
+          "events": [
+            {
+              "type": "messageSending",
+              "actionId": "onMessageSendHandler",
+              "options": {
+                "sendMode": "softBlock"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
